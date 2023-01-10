@@ -7,10 +7,14 @@ series link:https://www.kaggle.com/competitions/tabular-playground-series-aug-20
 
 ## Environment and Dependency
 * System: macOS Monterey
-* GPU: Apple M1 Pro
+* GPU: **Apple M1 Pro
 * python: 3.9.7
-* device: mps
+* device: **mps
 * requirement.txt
+
+## Model architecture
+**model.py
+3 level nn
 
 ## Step to reproduce the result
 After run this code, it will generate weight.pt.
