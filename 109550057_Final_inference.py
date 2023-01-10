@@ -20,16 +20,15 @@ def test():
     #data_processing
     test_df = pd.read_csv("./test.csv")
     test_df.drop(drop_col, inplace=True, axis=1)
-    #test_df = test_df.fillna(0)
     for col in test_df.columns:
         test_df[col].fillna(value=test_df[col].mean(), inplace=True)
     test_data = test_df.values
     test_ds = MyDataset(test_data, test_mode=True)
     test_dl = DataLoader(test_ds, batch_size=batch_size, num_workers=0, drop_last=False, shuffle=False)
 
-    if os.path.exists('submission.csv'):
-        os.remove('submission.csv')
-    file = open('submission.csv', 'w', newline='')
+    if os.path.exists('109550057_submission.csv'):
+        os.remove('109550057_submission.csv')
+    file = open('109550057_submission.csv', 'w', newline='')
     csv_writer = csv.writer(file)
     csv_writer.writerow(["id", "failure"])
 
@@ -39,7 +38,8 @@ def test():
     model = MyNet()
     model.load_state_dict(torch.load(f"{weight_file}"))
     model.to(device)
-
+    
+    #test
     ans = list()
     model.eval()
     with torch.no_grad():
@@ -48,7 +48,7 @@ def test():
             preds = model(attrs)
             for i in range(len(indexs)):
                 ans.append((int(indexs[i].item()), preds[i].item()))
-
+    #write to file
     for index, l in ans:
         csv_writer.writerow([index, l])
     file.close()

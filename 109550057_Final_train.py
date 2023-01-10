@@ -49,7 +49,6 @@ def train(net, train_dataloader, valid_dataloader, criterion, optimizer, schedul
             scheduler.step()
         
         cur_loss = 0
-        #cur_loss.to(device)
         cur_loss = train_loss / len(train_dataloader.dataset)
         print(f'Training loss: {cur_loss:.2f}')
         
@@ -78,16 +77,17 @@ def train(net, train_dataloader, valid_dataloader, criterion, optimizer, schedul
  
 
 def model_train(lr, weight_decay, batch_size):
+    #model train function
     device = "mps"
     train_epochs = 50
     full_epochs = 50
     train_data = []
     val_data = []
-
+    
+    #data preprocessing
     drop_col = ['id', 'product_code', 'attribute_0', 'attribute_1']
     full_df = pd.read_csv("./train.csv")
     full_df.drop(drop_col, inplace=True, axis=1)
-    #full_df = full_df.dropna()
     for col in full_df.columns:
         full_df[col].fillna(value=full_df[col].mean(), inplace=True)
     full_data = full_df.values
@@ -96,20 +96,18 @@ def model_train(lr, weight_decay, batch_size):
             train_data.append(full_data[i])
         else:
             val_data.append(full_data[i])
-
+    
+    #load to dataloader
     full_ds = MyDataset(full_data) 
-    #full_dl = DataLoader(full_ds, batch_size=batch_size, drop_last=True, num_workers=0, shuffle=True)
     full_dl = DataLoader(full_ds, batch_size=batch_size, drop_last=True, num_workers=0, shuffle=False)
 
     train_ds = MyDataset(train_data) 
-    #train_dl = DataLoader(train_ds, batch_size=batch_size, drop_last=True, num_workers=0, shuffle=True)
     train_dl = DataLoader(train_ds, batch_size=batch_size, drop_last=True, num_workers=0, shuffle=False)
 
     val_ds = MyDataset(val_data)
     val_dl = DataLoader(val_ds, batch_size=batch_size, drop_last=False, num_workers=0, shuffle=False)
 
     model = MyNet().to(device) 
-    #criterion = nn.BCEWithLogitsLoss()
     criterion = nn.BCELoss()
     
     #train and validate
@@ -124,7 +122,9 @@ def model_train(lr, weight_decay, batch_size):
     optimizer = torch.optim.RAdam(model.parameters(), lr=lr, weight_decay=weight_decay)
     model = train(model, full_dl, None, criterion, optimizer, None, full_epochs, device)
 
+
 def grid_search(lr_base, weight_decay, batch_base):
+    #grid search for good hyperparameters
     for lr_t in range(1, 121):
         for b_t in range(2, 4):
             lr = lr_base * lr_t
@@ -132,6 +132,7 @@ def grid_search(lr_base, weight_decay, batch_base):
             print(f"\nlr:{lr} batch:{batch_size}")
             model_train(lr=lr, weight_decay=weight_decay, batch_size=batch_size)
             test()
+            #submit by kaggle api   
             status = subprocess.call(f"kaggle competitions submit -c tabular-playground-series-aug-2022 -f submission.csv -m 'dnn\nlr:{lr:.6f}\nbatch:{batch_size} \nepoch:50+50 \nweight_d:{weight_decay}'", shell=True)
             while status != 0:
                 print("resubmit")
@@ -142,25 +143,8 @@ def grid_search(lr_base, weight_decay, batch_base):
 if __name__ == '__main__':
     #hyper parameter
     lr = 6e-5
-    weight_decay = 3e-4 #4e-4
-    batch_size = 64#32
-    #random.seed(619520)
+    weight_decay = 3e-4 
+    batch_size = 64
     model_train(lr=lr, weight_decay=weight_decay, batch_size=batch_size)
-    """
-    #grid_search(lr_base=lr, weight_decay=weight_decay, batch_base=batch_size)
-    for i in range(500):
-        model_train(lr=lr, weight_decay=weight_decay, batch_size=batch_size)
-        test()
-        status = subprocess.call(f"kaggle competitions submit -c tabular-playground-series-aug-2022 -f submission.csv -m 'dnn\nlr:{lr:.6f}\nbatch:{batch_size} \nepoch:50+50 \nweight_d:{weight_decay} i:{i}'", shell=True)
-        while status != 0:
-            print("resubmit")
-            status = subprocess.call(f"kaggle competitions submit -c tabular-playground-series-aug-2022 -f submission.csv -m 'dnn\nlr:{lr:.6f}\nbatch:{batch_size} \nepoch:50+50 \nweight_d:{weight_decay} i:{i}'", shell=True)
-        #subprocess.call(f"mkdir case{i}")
-        os.makedirs(f"./case{i}", 0o777 )
-        #subprocess.call(f"mv submission.csv weights.pt model.pt case{i}")
-        os.rename("./submission.csv", f"./case{i}/submission.csv")
-        os.rename("./weights.pt", f"./case{i}/weights.pt")
-    """
-
 
        
