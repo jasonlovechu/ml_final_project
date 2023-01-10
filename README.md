@@ -12,10 +12,12 @@ series: Tabular Playground Series - Aug 2022
 * requirement.txt
 
 ## Step to reproduce the result
+after run this code, it will generate weight.pt
 ```
-after run this code, it will generate weight.pt  
 train model: python 109550057_Final_train.py
+```
 load state from weight.pt and test, generate 109550057_submission.csv
+```
 test model: python 109550057_Final_inference.py
 ```
 ## Result and model weight link
