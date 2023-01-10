@@ -28,3 +28,8 @@ test model: python 109550057_Final_inference.py
 ## Result and model weight link
 model weight link(only by mps): https://drive.google.com/drive/folders/1yz9xRz01KTCUbSCzmyC0978c18H6MaKp?usp=sharing    
 private score: 0.59133(may differ due to random issue)
+
+## Discussion
+* I test two kinds of batch size, which are 64 and 96 with lr ranges from 1e-5 to 1e-3. The accuracies of batch size 64 are higher in average.   
+* accuracies decrease when lr increase in most cases.  
+* The result turn out to be different even with same hyperparameters. I tried to train three models with each hyperparameter to reduce the influence from randomness.   
