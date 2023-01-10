@@ -3,6 +3,7 @@
 This repo is about my final project of ml. We are asked to join a real-world machine learning competition on kaggle.  
 class: ml, nycu, 2022fall  
 series: Tabular Playground Series - Aug 2022
+series link:https://www.kaggle.com/competitions/tabular-playground-series-aug-2022/overview
 
 ## Environment and Dependency
 * System: macOS Monterey
