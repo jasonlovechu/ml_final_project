@@ -21,5 +21,5 @@ Load state from weight.pt and test, generate 109550057_submission.csv.
 test model: python 109550057_Final_inference.py
 ```
 ## Result and model weight link
-model weight link(only by mps): https://drive.google.com/drive/folders/1yz9xRz01KTCUbSCzmyC0978c18H6MaKp?usp=sharing  
+model weight link(only by mps): https://drive.google.com/drive/folders/1yz9xRz01KTCUbSCzmyC0978c18H6MaKp?usp=sharing    
 private score: 0.59133(may differ due to random issue)
