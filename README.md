@@ -17,7 +17,7 @@ series link:https://www.kaggle.com/competitions/tabular-playground-series-aug-20
 3 level nn
 
 ## Step to reproduce the result
-After run this code, it will generate weight.pt. The grid search function is for hyperparameter searching and auto submit by kaggle api.
+After run this code, it will generate weight.pt. The grid search function is for hyper-parameters searching and auto submit by kaggle api.
 ```
 train model: python 109550057_Final_train.py
 ```
