@@ -13,7 +13,7 @@ series link:https://www.kaggle.com/competitions/tabular-playground-series-aug-20
 * requirement.txt
 
 ## Model architecture
-**model.py**  
+**models.py**  
 3 level nn
 
 ## Step to reproduce the result
